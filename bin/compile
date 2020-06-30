@@ -45,6 +45,7 @@ if !(test -f ${BUILD_DIR}/bin/vector); then
     --location \
     --output ${BUILD_DIR}/vector.tar.gz \
     https://packages.timber.io/vector/latest/vector-x86_64-unknown-linux-musl.tar.gz
+  # Goes to /bin/vector for the user
   tar \
     --extract \
     --verbose \
@@ -62,8 +63,8 @@ else
 fi
 
 # Make sure this script is always provisioned.
-if !(test -f ${BUILD_DIR}/compile); then
-  cp --verbose ${THIS_FILE} ${BUILD_DIR}/compile
+if !(test -f ${BUILD_DIR}/bin/compile); then
+  cp --verbose ${THIS_FILE} ${BUILD_DIR}/bin/compile
 fi
 
 exit 0
