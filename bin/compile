@@ -70,7 +70,8 @@ echo "Configuration is:"
 cat vector.toml
 echo ""
 echo "Validating:"
-${BUILD_DIR}/bin/vector validate vector.toml
+export PORT=8080
+exec ${BUILD_DIR}/bin/vector validate ${BUILD_DIR}/vector.toml
 
 # Make sure this script is always provisioned.
 if !(test -f ${BUILD_DIR}/bin/compile); then
