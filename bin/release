@@ -6,7 +6,7 @@ cat << EOF
 ---
 default_process_types:
   # We have to use this name!
-  web: bin/vector --config vector.toml
+  web: echo "Echoing vector.toml:" && cat vector.toml && bin/vector --config vector.toml
 EOF
 
 exit 0
