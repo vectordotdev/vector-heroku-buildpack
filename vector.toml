@@ -2,7 +2,7 @@
 
 [sources.heroku]
   type = "logplex"
-  address = "0.0.0.0:80"
+  address = "0.0.0.0:${PORT}"
 
 [sinks.my_sink_id]
   type = "aws_cloudwatch_logs"
