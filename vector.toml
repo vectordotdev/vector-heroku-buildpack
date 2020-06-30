@@ -10,5 +10,5 @@
   stream_name = "logplex"
   group_name = "vector"
   encoding.codec = "json"
-  region = "us-east-1" # required when endpoint = ""
+  region = "${AWS_REGION}" # required when endpoint = ""
   #endpoint = "" # Custom endpoint for use with AWS-compatible services.
