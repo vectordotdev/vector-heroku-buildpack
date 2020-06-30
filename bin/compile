@@ -50,7 +50,7 @@ fi
 if !(test -z "${VECTOR_TOML_URL}"); then
   echo "Found \`\${VECTOR_TOML_URL} = ${VECTOR_TOML_URL}\`"
 
-  echo "Fetching \`\${VECTOR_TOML_URL}\` to \`\${BUILD_DIR}/vector.toml\`"
+  echo "Fetching \`\${VECTOR_TOML_URL}\` to \`${BUILD_DIR}/vector.toml\`"
   curl \
     --location \
     --output ${BUILD_DIR}/vector.toml \
