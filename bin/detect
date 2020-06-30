@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+BUILD_DIR=${1}
+
+# Since we can't access ENV vars here, there's nothing we can do.
+
+exit 0

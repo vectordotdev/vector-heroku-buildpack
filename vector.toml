@@ -1,0 +1,14 @@
+# This is a default, demo config used by our testing.
+
+[sources.heroku]
+  type = "logplex"
+  address = "0.0.0.0:80"
+
+[sinks.my_sink_id]
+  type = "aws_cloudwatch_logs"
+  inputs = ["heroku"]
+  stream_name = "{{ host }}"
+  group_name = "logplex"
+  encoding.codec = "json"
+  region = "us-east-1" # required when endpoint = ""
+  #endpoint = "" # Custom endpoint for use with AWS-compatible services.

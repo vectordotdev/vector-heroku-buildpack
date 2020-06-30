@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+readonly BUILD_DIR=${1}
+readonly CACHE_DIR=${2}
+readonly ENV_DIR=${3}
+
+mkdir --parents \
+  ${BUILD_DIR} \
+  ${CACHE_DIR} \
+  ${ENV_DIR}
+
+# Figure out which config to use.
+# Heroku does this weird thing where they pass env vars as files.
+# See https://devcenter.heroku.com/articles/buildpack-api#bin-compile-summary
+if (test -f "${ENV_DIR}/VECTOR_TOML_URL"); then
+  readonly VECTOR_TOML_URL=`cat ${ENV_DIR}/VECTOR_TOML_URL`
+  echo "Found \`\${VECTOR_TOML_URL} = ${VECTOR_TOML_URL}\`"
+
+  echo "Fetching \`\${VECTOR_TOML_URL}\` to \`\${BUILD_DIR}/vector.toml\`"
+  curl \
+    --out ${BUILD_DIR}/vector.toml \
+    ${VECTOR_TOML_URL}
+
+elif (test -f ${BUILD_DIR}/vector.toml); then
+  echo "Using \`${BUILD_DIR}/vector.toml\`"
+
+else
+  echo "Adding Vector without a \`./vector.toml\` or \`\${VECTOR_TOML_URL}\`."
+  echo "This is unsupported."
+  exit 1
+fi
+
+# Fetch Vector
+# Use the latest MUSL stable.
+# This is to avoid any gnarly libc issues.
+curl -L -o ${BUILD_DIR}/vector.tar.gz https://packages.timber.io/vector/latest/vector-x86_64-unknown-linux-musl.tar.gz
+tar \
+  --extract \
+  --verbose \
+  --file ${BUILD_DIR}/vector.tar.gz \
+  --strip-components=2 \
+  --directory ${BUILD_DIR} \
+  ./vector-x86_64-unknown-linux-musl/bin/vector
+
+# Clean up
+rm ${BUILD_DIR}/vector.tar.gz
+
+exit 0
