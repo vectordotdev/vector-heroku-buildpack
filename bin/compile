@@ -18,7 +18,8 @@ if (test -f "${ENV_DIR}/VECTOR_TOML_URL"); then
 
   echo "Fetching \`\${VECTOR_TOML_URL}\` to \`\${BUILD_DIR}/vector.toml\`"
   curl \
-    --out ${BUILD_DIR}/vector.toml \
+    --location \
+    --output ${BUILD_DIR}/vector.toml \
     ${VECTOR_TOML_URL}
 
 elif (test -f ${BUILD_DIR}/vector.toml); then
@@ -30,10 +31,16 @@ else
   exit 1
 fi
 
-# Fetch Vector
+echo "Configuration is:"
+cat vector.toml
+
+echo "Fetching and extracting Vector (musl, latest stable)"
 # Use the latest MUSL stable.
 # This is to avoid any gnarly libc issues.
-curl -L -o ${BUILD_DIR}/vector.tar.gz https://packages.timber.io/vector/latest/vector-x86_64-unknown-linux-musl.tar.gz
+curl \
+  --location \
+  --output ${BUILD_DIR}/vector.tar.gz \
+  https://packages.timber.io/vector/latest/vector-x86_64-unknown-linux-musl.tar.gz
 tar \
   --extract \
   --verbose \
@@ -43,6 +50,7 @@ tar \
   ./vector-x86_64-unknown-linux-musl/bin/vector
 
 # Clean up
+echo "Clean up"
 rm ${BUILD_DIR}/vector.tar.gz
 
 exit 0
