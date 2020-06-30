@@ -7,8 +7,8 @@
 [sinks.my_sink_id]
   type = "aws_cloudwatch_logs"
   inputs = ["heroku"]
-  stream_name = "{{ host }}"
-  group_name = "logplex"
+  stream_name = "logplex"
+  group_name = "vector"
   encoding.codec = "json"
   region = "us-east-1" # required when endpoint = ""
   #endpoint = "" # Custom endpoint for use with AWS-compatible services.
