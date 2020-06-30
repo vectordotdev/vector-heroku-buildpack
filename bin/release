@@ -5,7 +5,8 @@ BUILD_DIR=${1}
 cat << EOF
 ---
 default_process_types:
-  vector: bin/vector --config vector.toml
+  # We have to use this name!
+  web: bin/vector --config vector.toml
 EOF
 
 exit 0
