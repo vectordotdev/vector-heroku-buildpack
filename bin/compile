@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# This script gets called **every restart**
+set -e
 
 readonly THIS_FILE=${0}
 readonly BUILD_DIR=${1}
@@ -10,33 +12,7 @@ mkdir --parents \
   ${CACHE_DIR} \
   ${ENV_DIR}
 
-# Figure out which config to use.
-# Heroku does this weird thing where they pass env vars as files.
-# See https://devcenter.heroku.com/articles/buildpack-api#bin-compile-summary
-if (test -f "${ENV_DIR}/VECTOR_TOML_URL"); then
-  readonly VECTOR_TOML_URL=`cat ${ENV_DIR}/VECTOR_TOML_URL`
-  echo "Found \`\${VECTOR_TOML_URL} = ${VECTOR_TOML_URL}\`"
-
-  echo "Fetching \`\${VECTOR_TOML_URL}\` to \`\${BUILD_DIR}/vector.toml\`"
-  curl \
-    --location \
-    --output ${BUILD_DIR}/vector.toml \
-    ${VECTOR_TOML_URL}
-
-elif (test -f ${BUILD_DIR}/vector.toml); then
-  echo "Using \`${BUILD_DIR}/vector.toml\`"
-
-else
-  echo "Adding Vector without a \`./vector.toml\` or \`\${VECTOR_TOML_URL}\`."
-  echo "This is unsupported."
-  exit 1
-fi
-
-echo ""
-echo "Configuration is:"
-cat vector.toml
-echo ""
-
+# First, set up vector
 if !(test -f ${BUILD_DIR}/bin/vector); then
   echo "Fetching and extracting Vector (musl, latest stable)"
   # Use the latest MUSL stable.
@@ -61,6 +37,40 @@ if !(test -f ${BUILD_DIR}/bin/vector); then
 else
   echo "Using cached \`vector\`"
 fi
+
+# Figure out which config to use.
+# Heroku does this weird thing where they pass env vars as files.
+# See https://devcenter.heroku.com/articles/buildpack-api#bin-compile-summary
+if (test -f "${ENV_DIR}/VECTOR_TOML_URL"); then
+  readonly VECTOR_TOML_URL=`cat ${ENV_DIR}/VECTOR_TOML_URL`
+    echo "Detected buildpack env \${VECTOR_TOML_URL} = `cat ${ENV_DIR}/VECTOR_TOML_URL`"
+fi
+
+# If a URL exists, always refresh it.
+if !(test -z "${VECTOR_TOML_URL}"); then
+  echo "Found \`\${VECTOR_TOML_URL} = ${VECTOR_TOML_URL}\`"
+
+  echo "Fetching \`\${VECTOR_TOML_URL}\` to \`\${BUILD_DIR}/vector.toml\`"
+  curl \
+    --location \
+    --output ${BUILD_DIR}/vector.toml \
+    ${VECTOR_TOML_URL}
+
+elif (test -f ${BUILD_DIR}/vector.toml); then
+  echo "Using \`${BUILD_DIR}/vector.toml\`"
+
+else
+  echo "Adding Vector without a \`./vector.toml\` or \`\${VECTOR_TOML_URL}\`."
+  echo "This is unsupported."
+  exit 1
+fi
+
+echo ""
+echo "Configuration is:"
+cat vector.toml
+echo ""
+echo "Validating:"
+${BUILD_DIR}/bin/vector validate vector.toml
 
 # Make sure this script is always provisioned.
 if !(test -f ${BUILD_DIR}/bin/compile); then
