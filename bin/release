@@ -6,7 +6,7 @@ cat << EOF
 ---
 default_process_types:
   # We have to use this name!
-  web: bin/compile . . . && bin/vector --config vector.toml
+  web: bin/refresh-vector . . . && bin/vector --config vector.toml
 EOF
 
 exit 0

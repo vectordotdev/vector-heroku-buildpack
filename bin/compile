@@ -71,11 +71,12 @@ cat vector.toml
 echo ""
 echo "Validating:"
 export PORT=8080
-exec ${BUILD_DIR}/bin/vector validate ${BUILD_DIR}/vector.toml
+${BUILD_DIR}/bin/vector validate ${BUILD_DIR}/vector.toml
+echo "Valid!"
 
 # Make sure this script is always provisioned.
-if !(test -f ${BUILD_DIR}/bin/compile); then
-  cp --verbose ${THIS_FILE} ${BUILD_DIR}/bin/compile
+if !(test -f ${BUILD_DIR}/bin/refresh-vector); then
+  cp --verbose ${THIS_FILE} ${BUILD_DIR}/bin/refresh-vector
 fi
 
 exit 0
