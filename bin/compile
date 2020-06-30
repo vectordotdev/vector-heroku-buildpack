@@ -55,11 +55,15 @@ if !(test -f ${BUILD_DIR}/bin/vector); then
 
   # Clean up
   echo "Clean up"
-  rm ${BUILD_DIR}/vector.tar.gz
+  rm --verbose ${BUILD_DIR}/vector.tar.gz
 
 else
   echo "Using cached \`vector\`"
 fi
 
-cp ${THIS_FILE} ${BUILD_DIR}/compile
+# Make sure this script is always provisioned.
+if !(test -f ${BUILD_DIR}/compile); then
+  cp --verbose ${THIS_FILE} ${BUILD_DIR}/compile
+fi
+
 exit 0
