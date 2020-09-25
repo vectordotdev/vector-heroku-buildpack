@@ -4,13 +4,7 @@
   type = "logplex"
   address = "0.0.0.0:${PORT}"
 
-[sinks.my_sink_id]
-  type = "aws_cloudwatch_logs"
-  inputs = ["heroku"]
-  stream_name = "${AWS_CLOUDWATCH_STREAM_NAME}"
-  create_missing_stream = true
-  group_name = "${AWS_CLOUDWATCH_GROUP_NAME}"
-  create_missing_group = true
-  encoding.codec = "json"
-  region = "${AWS_REGION}" # required when endpoint = ""
-  #endpoint = "" # Custom endpoint for use with AWS-compatible services.
+#[sinks.my_sink_id]
+#  type = "http"
+#  inputs = ["heroku"]
+#  uri = "https://somewhere:9000/endpoint" # required
