@@ -3,7 +3,9 @@
 [sources.heroku]
   type = "logplex"
   address = "0.0.0.0:${PORT}"
-
+  auth.username = "${LOGPLEX_AUTH_USERNAME}"
+  auth.password = "${LOGPLEX_AUTH_PASSWORD}"
+  
 #[sinks.my_sink_id]
 #  type = "http"
 #  inputs = ["heroku"]
