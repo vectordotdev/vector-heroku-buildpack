@@ -6,7 +6,7 @@
   auth.username = "${LOGPLEX_AUTH_USERNAME}"
   auth.password = "${LOGPLEX_AUTH_PASSWORD}"
   
-#[sinks.my_sink_id]
-#  type = "http"
-#  inputs = ["heroku"]
-#  uri = "https://somewhere:9000/endpoint" # required
+[sinks.replace_me]
+ type = "blackhole"
+ inputs = ["heroku"]
+ print_amount = 1000

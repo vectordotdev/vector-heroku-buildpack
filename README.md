@@ -6,6 +6,8 @@ Heroku doesn't normally deal much with binaries, so the best way for us to provi
 
 ### Can I use this?
 
-Of course! The easiest way is to head over to [the Vector readme's *deploy* section](https://github.com/timberio/vector#deploy).
+Of course! The easiest way is to head over to [the Vector readme's *deploy* section](https://github.com/timberio/vector#deploy) and follow along.
 
-Otherwise, if you're feeling adventurous, add this buildpack to your `app.json`! If you just want to have a `vector` command available in your Heroku deployment for some other reason, well, we suggest you just `curl -O ${URL}` it in your build scripts!
+Otherwise, if you're feeling adventurous, maybe try adding this buildpack to your `app.json`? We'd love PRs to improve this feature.
+
+If you just want to have a `vector` command available in your Heroku deployment for some other reason, well, we suggest you just `curl -O ${URL}` it in your build scripts!
